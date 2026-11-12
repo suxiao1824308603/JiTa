@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>动态添加经历测试</title>
+  <style>
+    body { margin: 0; padding: 28px; background: #f4f6fb; color: #0f172a;
+      font: 14px/1.6 "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
+    .sheet { max-width: 780px; margin: 0 auto; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 24px 28px; }
+    h1 { margin: 0 0 4px; font-size: 20px; }
+    .sub { margin: 0 0 16px; color: #64748b; font-size: 12px; }
+    h2 { margin: 22px 0 10px; padding-top: 14px; border-top: 1px solid #eef2f8; font-size: 15px; }
+    .card { margin-bottom: 12px; padding: 14px 16px; border: 1px solid #e8edf6; border-radius: 10px; background: #fbfcff; }
+    .card h3 { margin: 0 0 10px; font-size: 13px; color: #475569; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .label { color: #334155; font-size: 12.5px; }
+    input, select { height: 38px; padding: 7px 10px; border: 1px solid #d7dfec; border-radius: 8px; background: #fff; font: inherit; font-size: 13px; }
+    .add-btn { height: 36px; padding: 0 16px; border: 1px dashed #a9b8ff; border-radius: 8px; background: #f8faff; color: #3b5bfd; cursor: pointer; font: inherit; font-size: 12.5px; }
+    .add-btn:hover { background: #eef2ff; }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <h1>动态添加经历测试</h1>
+    <p class="sub">页面默认只有一条教育经历和一篇论文，插件应自动点击「添加」并填充第二条。</p>
+
+    <h2>教育经历</h2>
+    <div id="eduList">
+      <div class="card">
+        <h3>教育经历 1</h3>
+        <div class="grid">
+          <div class="field"><span class="label">学校名称</span><input name="school_1" placeholder="请输入学校"></div>
+          <div class="field"><span class="label">专业</span><input name="major_1" placeholder="请输入专业"></div>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="add-btn" id="addEdu">添加教育经历</button>
+
+    <h2>论文发表</h2>
+    <div id="paperList">
+      <div class="card">
+        <h3>论文 1</h3>
+        <div class="grid">
+          <div class="field"><span class="label">论文名称</span><input name="paper_1" placeholder="请输入论文题目"></div>
+          <div class="field"><span class="label">期刊名称</span><input name="journal_1" placeholder="请输入期刊"></div>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="add-btn" id="addPaper">添加论文</button>
+  </div>
+
+  <script>
+    let eduCount = 1;
+    let paperCount = 1;
+
+    document.getElementById('addEdu').addEventListener('click', () => {
+      eduCount += 1;
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3>教育经历 ${eduCount}</h3>
+        <div class="grid">
+          <div class="field"><span class="label">学校名称</span><input name="school_${eduCount}" placeholder="请输入学校"></div>
+          <div class="field"><span class="label">专业</span><input name="major_${eduCount}" placeholder="请输入专业"></div>
+        </div>`;
+      document.getElementById('eduList').appendChild(card);
+    });
+
+    document.getElementById('addPaper').addEventListener('click', () => {
+      paperCount += 1;
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3>论文 ${paperCount}</h3>
+        <div class="grid">
+          <div class="field"><span class="label">论文名称</span><input name="paper_${paperCount}" placeholder="请输入论文题目"></div>
+          <div class="field"><span class="label">期刊名称</span><input name="journal_${paperCount}" placeholder="请输入期刊"></div>
+        </div>`;
+      document.getElementById('paperList').appendChild(card);
+    });
+
+    window.__dynamicData = () => ({
+      eduCount: document.querySelectorAll('#eduList .card').length,
+      paperCount: document.querySelectorAll('#paperList .card').length,
+      school1: document.querySelector('[name="school_1"]')?.value || '',
+      school2: document.querySelector('[name="school_2"]')?.value || '',
+      paper1: document.querySelector('[name="paper_1"]')?.value || '',
+      paper2: document.querySelector('[name="paper_2"]')?.value || '',
+      journal2: document.querySelector('[name="journal_2"]')?.value || ''
+    });
+  </script>
+</body>
+</html>

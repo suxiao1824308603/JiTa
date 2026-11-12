@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>星云科技 2026 校园招聘 · 在线申请</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --brand: #3b5bfd;
+      --soft: #f6f8fc;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f1f4fa;
+      color: var(--ink);
+      font: 14px/1.65 "PingFang SC", "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
+    }
+    .hero {
+      padding: 28px 20px 46px;
+      background: linear-gradient(120deg, #1d2a6b, #3b5bfd 55%, #6d5cff);
+      color: #fff;
+    }
+    .hero-inner { max-width: 920px; margin: 0 auto; }
+    .brandline { display: flex; align-items: center; gap: 10px; font-size: 13px; opacity: .9; }
+    .brandline .mark {
+      display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px;
+      background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.25); font-weight: 700;
+    }
+    .hero h1 { margin: 18px 0 6px; font-size: 26px; letter-spacing: .5px; }
+    .hero p { margin: 0; opacity: .82; font-size: 13px; }
+    .wrap { max-width: 920px; margin: -28px auto 60px; padding: 0 20px; }
+    .notice {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 14px; padding: 10px 14px;
+      background: #fff; border: 1px solid #e6ebf5; border-radius: 10px; color: var(--muted); font-size: 12px;
+      box-shadow: 0 2px 8px rgba(15,23,42,.04);
+    }
+    .notice strong { color: var(--brand); font-weight: 600; }
+    .form-card {
+      margin-bottom: 16px; padding: 24px 26px 26px; background: #fff;
+      border: 1px solid #e6ebf5; border-radius: 14px; box-shadow: 0 2px 10px rgba(15,23,42,.04);
+    }
+    .form-card > h2 {
+      margin: 0 0 4px; font-size: 17px; letter-spacing: .2px;
+    }
+    .form-card > .sub { margin: 0 0 18px; color: var(--muted); font-size: 12px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px 22px; }
+    .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+    .field.full { grid-column: 1 / -1; }
+    .label {
+      font-size: 13px; color: #334155; font-weight: 500;
+    }
+    .label em { color: #ef4444; font-style: normal; margin-left: 2px; }
+    .label small { color: #94a3b8; font-weight: 400; font-size: 11px; margin-left: 4px; }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="month"], select, textarea {
+      width: 100%; min-height: 40px; padding: 9px 12px; border: 1px solid #d7dfec; border-radius: 9px;
+      background: #fff; color: var(--ink); font: inherit; font-size: 13px; outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #7f97ff; box-shadow: 0 0 0 3px rgba(59,91,253,.12);
+    }
+    textarea { min-height: 96px; resize: vertical; line-height: 1.7; }
+    .radios { display: flex; gap: 18px; min-height: 40px; align-items: center; }
+    .radios label { display: flex; align-items: center; gap: 7px; font-size: 13px; color: #334155; cursor: pointer; }
+    .radios input { width: 15px; height: 15px; accent-color: var(--brand); }
+    .repeat-card {
+      margin-bottom: 16px; padding: 18px 18px 4px; border: 1px solid #e8edf6; border-radius: 12px; background: #fbfcff;
+    }
+    .repeat-card h3 { margin: 0 0 14px; font-size: 13px; color: #475569; font-weight: 600; }
+    .fake-select {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      min-height: 40px; padding: 8px 12px; border: 1px solid #d7dfec; border-radius: 9px;
+      background: #fff; cursor: pointer; font-size: 13px;
+    }
+    .fake-select .fake-value.placeholder { color: #9aa7bb; }
+    .fake-select svg { flex: none; color: #94a3b8; }
+    .fake-menu {
+      position: absolute; z-index: 20; margin-top: 4px; min-width: 200px; padding: 6px;
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 12px 28px rgba(15,23,42,.14);
+    }
+    .fake-menu [role="option"] { padding: 8px 10px; border-radius: 7px; font-size: 13px; cursor: pointer; }
+    .fake-menu [role="option"]:hover { background: #f1f4ff; color: var(--brand); }
+    .select-wrap { position: relative; }
+    .upload {
+      display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px dashed #c3cee4;
+      border-radius: 10px; color: var(--muted); font-size: 12px; background: #fbfcff;
+    }
+    .upload input { max-width: 260px; font-size: 12px; }
+    .agree { display: flex; align-items: flex-start; gap: 8px; margin-top: 18px; color: #475569; font-size: 12px; }
+    .agree input { margin-top: 2px; accent-color: var(--brand); }
+    .agree a { color: var(--brand); }
+    .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
+    .btn {
+      height: 40px; padding: 0 20px; border-radius: 10px; border: 1px solid #d7dfec; background: #fff;
+      color: #334155; font: inherit; font-size: 13px; cursor: pointer;
+    }
+    .btn.primary { border: 0; background: var(--brand); color: #fff; font-weight: 600; box-shadow: 0 6px 16px rgba(59,91,253,.25); }
+    .btn:hover { filter: brightness(.98); }
+    .result {
+      margin-top: 18px; padding: 14px 16px; background: #0f172a; color: #dbeafe; border-radius: 12px;
+      font: 12px/1.6 Consolas, "SFMono-Regular", monospace; white-space: pre-wrap; max-height: 420px; overflow: auto;
+    }
+    .foot { text-align: center; color: #94a3b8; font-size: 11.5px; padding-bottom: 30px; }
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 21px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="brandline"><span class="mark">星</span> 星云科技 · 校园招聘</div>
+      <h1>2026 届校园招聘 · 在线申请</h1>
+      <p>后端开发工程师 / 上海 · 网申截止 2025-11-30</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="notice">
+      <strong>演示页</strong>
+      <span>这是「简填」插件的本地测试表单，结构与真实网申系统类似，填写内容不会上传到任何服务器。</span>
+    </div>
+
+    <form id="application" autocomplete="off" onsubmit="return false">
+      <section class="form-card">
+        <h2>基本信息</h2>
+        <p class="sub">请确保联系方式准确，后续面试通知将通过手机和邮箱发送。</p>
+        <div class="grid">
+          <div class="field">
+            <label class="label" for="realName">姓名 <em>*</em></label>
+            <input type="text" id="realName" name="realName" placeholder="请输入姓名">
+          </div>
+          <div class="field">
+            <span class="label">性别 <em>*</em></span>
+            <div class="radios">
+              <label><input type="radio" name="gender" value="男"> 男</label>
+              <label><input type="radio" name="gender" value="女"> 女</label>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="birth">出生日期</label>
+            <input type="month" id="birth" name="birth">
+          </div>
+          <div class="field">
+            <label class="label" for="phone">手机号码 <em>*</em></label>
+            <input type="tel" id="phone" name="phone" placeholder="请输入 11 位手机号">
+          </div>
+          <div class="field">
+            <label class="label" for="email">电子邮箱 <em>*</em></label>
+            <input type="email" id="email" name="email" placeholder="name@example.com">
+          </div>
+          <div class="field">
+            <label class="label" for="political">政治面貌</label>
+            <select id="political" name="political">
+              <option value="">请选择</option>
+              <option value="中共党员">中共党员（含预备党员）</option>
+              <option value="共青团员">共青团员</option>
+              <option value="群众">群众</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="label" for="hometown">籍贯</label>
+            <input type="text" id="hometown" name="hometown" placeholder="如：江苏南京">
+          </div>
+          <div class="field">
+            <span class="label">期望工作城市</span>
+            <div class="select-wrap">
+              <div class="fake-select" id="citySelect" role="combobox" aria-label="期望工作城市" tabindex="0">
+                <span class="fake-value placeholder">请选择城市</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+              </div>
+              <div class="fake-menu" id="cityMenu" role="listbox" hidden>
+                <div role="option" data-value="北京">北京</div>
+                <div role="option" data-value="上海">上海</div>
+                <div role="option" data-value="广州">广州</div>
+                <div role="option" data-value="深圳">深圳</div>
+                <div role="option" data-value="杭州">杭州</div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="position">应聘岗位</label>
+            <input type="text" id="position" name="position" placeholder="如：后端开发工程师">
+          </div>
+          <div class="field">
+            <label class="label" for="available">可到岗时间</label>
+            <input type="month" id="available" name="available">
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2>教育经历</h2>
+        <p class="sub">请按从近到远的顺序填写，最多可添加三段。</p>
+
+        <div class="repeat-card">
+          <h3>教育经历 1</h3>
+          <div class="grid">
+            <div class="field">
+              <label class="label" for="edu1_school">学校名称 <em>*</em></label>
+              <input type="text" id="edu1_school" name="edu1_school" placeholder="请输入毕业院校">
+            </div>
+            <div class="field">
+              <label class="label" for="edu1_college">学院名称</label>
+              <input type="text" id="edu1_college" name="edu1_college" placeholder="如：电子信息与电气工程学院">
+            </div>
+            <div class="field">
+              <label class="label" for="edu1_major">专业</label>
+              <input type="text" id="edu1_major" name="edu1_major" placeholder="请输入专业名称">
+            </div>
+            <div class="field">
+              <label class="label" for="edu1_degree">学历</label>
+              <select id="edu1_degree" name="edu1_degree">
+                <option value="">请选择</option>
+                <option value="大专">大专</option>
+                <option value="本科">本科</option>
+                <option value="硕士">硕士</option>
+                <option value="博士">博士</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label" for="edu1_start">入学时间</label>
+              <input type="month" id="edu1_start" name="edu1_start">
+            </div>
+            <div class="field">
+              <label class="label" for="edu1_end">毕业时间</label>
+              <input type="month" id="edu1_end" name="edu1_end">
+            </div>
+            <div class="field">
+              <label class="label" for="edu1_gpa">GPA</label>
+              <input type="text" id="edu1_gpa" name="edu1_gpa" placeholder="如 3.8/4.0">
+            </div>
+          </div>
+        </div>
+
+        <div class="repeat-card">
+          <h3>教育经历 2</h3>
+          <div class="grid">
+            <div class="field">
+              <label class="label" for="edu2_school">学校名称</label>
+              <input type="text" id="edu2_school" name="edu2_school" placeholder="请输入毕业院校">
+            </div>
+            <div class="field">
+              <label class="label" for="edu2_college">所在学院</label>
+              <input type="text" id="edu2_college" name="edu2_college" placeholder="如：计算机学院">
+            </div>
+            <div class="field">
+              <label class="label" for="edu2_major">专业</label>
+              <input type="text" id="edu2_major" name="edu2_major" placeholder="请输入专业名称">
+            </div>
+            <div class="field">
+              <label class="label" for="edu2_degree">学历</label>
+              <select id="edu2_degree" name="edu2_degree">
+                <option value="">请选择</option>
+                <option value="大专">大专</option>
+                <option value="本科">本科</option>
+                <option value="硕士">硕士</option>
+                <option value="博士">博士</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label" for="edu2_start">入学时间</label>
+              <input type="month" id="edu2_start" name="edu2_start">
+            </div>
+            <div class="field">
+              <label class="label" for="edu2_end">毕业时间</label>
+              <input type="month" id="edu2_end" name="edu2_end">
+            </div>
+            <div class="field">
+              <label class="label" for="edu2_gpa">GPA</label>
+              <input type="text" id="edu2_gpa" name="edu2_gpa" placeholder="如 3.7/4.0">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2>实习经历</h2>
+        <p class="sub">没有实习经历可以填写校内项目。</p>
+        <div class="grid">
+          <div class="field">
+            <label class="label" for="int_company">公司名称</label>
+            <input type="text" id="int_company" name="int_company" placeholder="请输入公司全称">
+          </div>
+          <div class="field">
+            <label class="label" for="int_dept">所在部门</label>
+            <input type="text" id="int_dept" name="int_dept" placeholder="如：基础架构部">
+          </div>
+          <div class="field">
+            <label class="label" for="int_position">岗位</label>
+            <input type="text" id="int_position" name="int_position" placeholder="如：后端开发实习生">
+          </div>
+          <div class="field">
+            <label class="label" for="int_city">工作地点</label>
+            <input type="text" id="int_city" name="int_city" placeholder="如：上海">
+          </div>
+          <div class="field">
+            <label class="label" for="int_start">开始时间</label>
+            <input type="month" id="int_start" name="int_start">
+          </div>
+          <div class="field">
+            <label class="label" for="int_end">结束时间</label>
+            <input type="month" id="int_end" name="int_end">
+          </div>
+          <div class="field full">
+            <label class="label" for="int_desc">工作内容</label>
+            <textarea id="int_desc" name="int_desc" placeholder="请描述你的主要职责与工作内容"></textarea>
+          </div>
+          <div class="field full">
+            <label class="label" for="int_result">工作成果</label>
+            <textarea id="int_result" name="int_result" placeholder="请用数据说明你的产出"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2>项目经历</h2>
+        <div class="grid">
+          <div class="field">
+            <label class="label" for="proj_name">项目名称</label>
+            <input type="text" id="proj_name" name="proj_name" placeholder="请输入项目名称">
+          </div>
+          <div class="field">
+            <label class="label" for="proj_role">担任角色</label>
+            <input type="text" id="proj_role" name="proj_role" placeholder="如：后端负责人">
+          </div>
+          <div class="field">
+            <label class="label" for="proj_tech">技术栈</label>
+            <input type="text" id="proj_tech" name="proj_tech" placeholder="如：Go、MySQL、Redis">
+          </div>
+          <div class="field full">
+            <label class="label" for="proj_desc">项目描述</label>
+            <textarea id="proj_desc" name="proj_desc" placeholder="项目解决了什么问题，你负责哪部分"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2>论文发表</h2>
+        <p class="sub">期刊、会议论文均可填写；作者排名如「第一作者」「第二作者」。</p>
+
+        <div class="repeat-card">
+          <h3>论文 1</h3>
+          <div class="grid">
+            <div class="field full">
+              <label class="label" for="paper1_title">论文名称</label>
+              <input type="text" id="paper1_title" name="paper1_title" placeholder="请输入论文题目">
+            </div>
+            <div class="field">
+              <label class="label" for="paper1_journal">期刊名称</label>
+              <input type="text" id="paper1_journal" name="paper1_journal" placeholder="如：《计算机学报》">
+            </div>
+            <div class="field">
+              <label class="label" for="paper1_date">发表时间</label>
+              <input type="month" id="paper1_date" name="paper1_date">
+            </div>
+            <div class="field">
+              <label class="label" for="paper1_rank">作者排名</label>
+              <input type="text" id="paper1_rank" name="paper1_rank" placeholder="如：第一作者">
+            </div>
+            <div class="field full">
+              <label class="label" for="paper1_link">论文链接</label>
+              <input type="text" id="paper1_link" name="paper1_link" placeholder="https://doi.org/...">
+            </div>
+          </div>
+        </div>
+
+        <div class="repeat-card">
+          <h3>论文 2</h3>
+          <div class="grid">
+            <div class="field full">
+              <label class="label" for="paper2_title">论文名称</label>
+              <input type="text" id="paper2_title" name="paper2_title" placeholder="请输入论文题目">
+            </div>
+            <div class="field">
+              <label class="label" for="paper2_journal">期刊名称</label>
+              <input type="text" id="paper2_journal" name="paper2_journal" placeholder="如：《计算机应用研究》">
+            </div>
+            <div class="field">
+              <label class="label" for="paper2_date">发表时间</label>
+              <input type="month" id="paper2_date" name="paper2_date">
+            </div>
+            <div class="field">
+              <label class="label" for="paper2_rank">作者排名</label>
+              <input type="text" id="paper2_rank" name="paper2_rank" placeholder="如：第二作者">
+            </div>
+            <div class="field full">
+              <label class="label" for="paper2_link">论文链接</label>
+              <input type="text" id="paper2_link" name="paper2_link" placeholder="https://doi.org/...">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2>荣誉奖励</h2>
+        <p class="sub">奖学金、竞赛奖项、荣誉称号等。</p>
+
+        <div class="repeat-card">
+          <h3>荣誉 1</h3>
+          <div class="grid">
+            <div class="field">
+              <label class="label" for="honor1_name">荣誉名称</label>
+              <input type="text" id="honor1_name" name="honor1_name" placeholder="如：国家奖学金">
+            </div>
+            <div class="field">
+              <label class="label" for="honor1_date">获得时间</label>
+              <input type="month" id="honor1_date" name="honor1_date">
+            </div>
+          </div>
+        </div>
+
+        <div class="repeat-card">
+          <h3>荣誉 2</h3>
+          <div class="grid">
+            <div class="field">
+              <label class="label" for="honor2_name">荣誉名称</label>
+              <input type="text" id="honor2_name" name="honor2_name" placeholder="如：全国大学生软件创新大赛二等奖">
+            </div>
+            <div class="field">
+              <label class="label" for="honor2_date">获得时间</label>
+              <input type="month" id="honor2_date" name="honor2_date">
+            </div>
+          </div>
+        </div>
+
+        <div class="repeat-card">
+          <h3>荣誉 3</h3>
+          <div class="grid">
+            <div class="field">
+              <label class="label" for="honor3_name">荣誉名称</label>
+              <input type="text" id="honor3_name" name="honor3_name" placeholder="如：校优秀学生干部">
+            </div>
+            <div class="field">
+              <label class="label" for="honor3_date">获得时间</label>
+              <input type="month" id="honor3_date" name="honor3_date">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2>技能证书</h2>
+        <div class="grid">
+          <div class="field">
+            <label class="label" for="lang">语言能力</label>
+            <input type="text" id="lang" name="lang" placeholder="如：英语 CET-6">
+          </div>
+          <div class="field">
+            <label class="label" for="cert">证书</label>
+            <input type="text" id="cert" name="cert" placeholder="如：计算机等级考试二级">
+          </div>
+          <div class="field full">
+            <label class="label" for="skills">软件技能</label>
+            <input type="text" id="skills" name="skills" placeholder="如：Java、Go、Docker">
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2>开放题</h2>
+        <p class="sub">请认真作答，这部分会作为简历筛选的重要参考。</p>
+        <div class="grid">
+          <div class="field full">
+            <label class="label" for="q1">请描述你最有成就感的一件事 <em>*</em></label>
+            <textarea id="q1" name="q1" maxlength="500" placeholder="建议用 STAR 法则，200 字左右"></textarea>
+          </div>
+          <div class="field full">
+            <label class="label" for="q2">你为什么选择星云科技？</label>
+            <textarea id="q2" name="q2" maxlength="500" placeholder="可以从业务、团队、岗位匹配度等角度回答"></textarea>
+          </div>
+          <div class="field full">
+            <label class="label" for="q3">你的职业规划是什么？</label>
+            <textarea id="q3" name="q3" maxlength="500" placeholder="未来 3—5 年你希望成为什么样的人"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2>附件</h2>
+        <div class="upload">
+          <input type="file" id="resumeFile" name="resumeFile" accept=".pdf,.doc,.docx">
+          <span>支持 PDF / Word，单个文件不超过 10MB</span>
+        </div>
+        <label class="agree">
+          <input type="checkbox" name="agree" id="agree">
+          <span>我已阅读并同意 <a href="#" onclick="return false">《隐私政策》</a>，并承诺所填信息真实有效。</span>
+        </label>
+        <div class="actions">
+          <button type="button" class="btn" id="resetBtn">重置表单</button>
+          <button type="button" class="btn" id="checkBtn">查看当前表单数据</button>
+          <button type="button" class="btn primary" id="submitBtn">提交申请</button>
+        </div>
+        <pre class="result" id="result" hidden></pre>
+      </section>
+    </form>
+
+    <p class="foot">星云科技（虚构公司）· 本页面仅用于测试「简填」插件的自动填表效果</p>
+  </main>
+
+  <script>
+    const citySelect = document.getElementById('citySelect');
+    const cityMenu = document.getElementById('cityMenu');
+    const cityValue = citySelect.querySelector('.fake-value');
+
+    citySelect.addEventListener('click', (event) => {
+      event.stopPropagation();
+      cityMenu.hidden = !cityMenu.hidden;
+    });
+
+    cityMenu.addEventListener('click', (event) => {
+      const option = event.target.closest('[role="option"]');
+      if (!option) return;
+      event.stopPropagation();
+      cityValue.textContent = option.dataset.value;
+      cityValue.classList.remove('placeholder');
+      cityMenu.hidden = true;
+      citySelect.dataset.value = option.dataset.value;
+    });
+
+    document.addEventListener('click', () => { cityMenu.hidden = true; });
+
+    function collect() {
+      const data = {};
+      document.querySelectorAll('#application input, #application select, #application textarea').forEach((el) => {
+        if (el.type === 'file' || el.type === 'checkbox') return;
+        if (el.type === 'radio') {
+          if (el.checked) data[el.name] = el.value;
+          return;
+        }
+        if (el.name || el.id) data[el.name || el.id] = el.value;
+      });
+      data.expectedCity = citySelect.dataset.value || '';
+      return data;
+    }
+    window.__demoFormData = collect;
+
+    function show(data) {
+      const result = document.getElementById('result');
+      result.hidden = false;
+      result.textContent = JSON.stringify(data, null, 2);
+      result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      show(collect());
+    });
+
+    document.getElementById('checkBtn').addEventListener('click', () => {
+      show(collect());
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      document.getElementById('application').reset();
+      cityValue.textContent = '请选择城市';
+      cityValue.classList.add('placeholder');
+      delete citySelect.dataset.value;
+      document.getElementById('result').hidden = true;
+    });
+  </script>
+</body>
+</html>

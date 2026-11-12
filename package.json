@@ -1,0 +1,19 @@
+{
+  "name": "jianfill",
+  "version": "0.6.0",
+  "private": true,
+  "type": "module",
+  "description": "本地优先的校招/秋招网申自动填表浏览器扩展",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "check": "node tools/check-manifest.mjs",
+    "demo": "node tools/serve-demo.mjs",
+    "test": "node tests/e2e-autofill.mjs",
+    "icons": "python tools/make-icons.py"
+  },
+  "dependencies": {
+    "pdfjs-dist": "4.10.38"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "简填 · 网申助手",
+  "version": "0.6.0",
+  "description": "本地优先的校招/秋招网申自动填表插件：简历一键填充、论文与荣誉模块、PDF 简历解析、开放题可选 AI。",
+  "minimum_chrome_version": "114",
+  "permissions": ["storage", "scripting", "activeTab"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "action": {
+    "default_title": "简填 · 网申助手",
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "options_page": "src/options/options.html",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "src/shared/schema.js",
+        "src/shared/matcher.js",
+        "src/shared/fill.js",
+        "src/content/content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ]
+}

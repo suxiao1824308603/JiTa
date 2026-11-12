@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>简填 · 我的简历</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-mark">简</span>
+        <div>
+          <strong>简填</strong>
+          <small>网申助手</small>
+        </div>
+      </div>
+      <nav id="nav" class="nav"></nav>
+      <div class="sidebar-foot">
+        <button id="demoBtn" class="ghost">载入示例资料</button>
+        <button id="resetBtn" class="ghost danger">清空本机资料</button>
+        <span class="version">v0.6.0 · 本地存储</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="page-head">
+        <div>
+          <h1>我的简历</h1>
+          <p>认真填一次，之后在网申页面点一下就能自动填表。所有资料只保存在本机浏览器。</p>
+        </div>
+        <div class="head-actions">
+          <span id="saveState" class="save-state">已保存</span>
+          <button id="pdfImportBtn" class="btn primary">导入 PDF 简历</button>
+          <button id="importBtn" class="btn">导入 JSON</button>
+          <button id="exportBtn" class="btn">导出 JSON</button>
+          <input type="file" id="importFile" accept="application/json,.json" hidden>
+        </div>
+      </header>
+
+      <div id="formRoot"></div>
+
+      <section id="ai" class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>AI 开放题助手 <span class="tag">可选</span></h2>
+            <p>填写接口后，插件可以把「为什么选择我们」「职业规划」等开放题结合你的简历写成初稿。不填也能用本地语料库。</p>
+          </div>
+        </div>
+        <div class="ai-grid">
+          <label class="switch-line">
+            <input type="checkbox" data-ai="enabled">
+            <span class="switch"></span>
+            <span>启用 AI 作答</span>
+          </label>
+          <label class="field">
+            <span class="field-label">接口地址</span>
+            <input type="text" data-ai="baseURL" placeholder="https://api.deepseek.com/v1" spellcheck="false">
+            <small>兼容 OpenAI Chat Completions 的接口，通常以 /v1 结尾。</small>
+          </label>
+          <label class="field">
+            <span class="field-label">模型</span>
+            <input type="text" data-ai="model" placeholder="deepseek-chat" spellcheck="false">
+          </label>
+          <label class="field">
+            <span class="field-label">API Key</span>
+            <span class="secret">
+              <input type="password" data-ai="apiKey" placeholder="sk-..." autocomplete="off" spellcheck="false">
+              <button type="button" id="toggleKey" class="mini">显示</button>
+            </span>
+            <small>仅保存在本机 chrome.storage，不会上传到插件作者的服务器。</small>
+          </label>
+          <label class="field">
+            <span class="field-label">温度（0—1）</span>
+            <input type="number" data-ai="temperature" min="0" max="1" step="0.1">
+            <small>越高越发散，网申回答建议 0.3—0.5。</small>
+          </label>
+          <div class="field test-field">
+            <span class="field-label">连通性测试</span>
+            <button type="button" id="testAiBtn" class="btn">测试并生成一段示例</button>
+            <small id="testResult"></small>
+          </div>
+        </div>
+        <p class="notice">隐私提示：启用后，开放题题目与简历摘要会发送到你填写的接口；不使用 AI 时插件完全离线。</p>
+      </section>
+
+      <footer class="page-foot">
+        <span>简填 · 网申助手 · 数据保存在本机</span>
+        <span>遇到识别不准的字段？先点插件里的「检测字段」查看匹配结果。</span>
+      </footer>
+    </main>
+  </div>
+
+  <dialog id="pdfDialog" class="pdf-dialog">
+    <div class="dialog-head">
+      <div>
+        <h2>导入 PDF 简历</h2>
+        <p>自动提取文字，识别基本信息、教育经历、论文、荣誉奖励与技能，确认后写入简历。</p>
+      </div>
+      <button type="button" id="pdfClose" class="icon-close" aria-label="关闭">×</button>
+    </div>
+    <div class="dialog-body">
+      <label id="pdfDrop" class="dropzone" for="pdfFile">
+        <input type="file" id="pdfFile" accept="application/pdf,.pdf" hidden>
+        <span class="drop-icon">PDF</span>
+        <strong>选择或拖入 PDF 简历</strong>
+        <small>文字版 PDF 可直接解析；扫描件 / 图片型 PDF 读不到文字。</small>
+      </label>
+      <label class="switch-line pdf-ai-toggle">
+        <input type="checkbox" id="pdfAi">
+        <span class="switch"></span>
+        <span>使用 AI 精细解析（更完整，需要先在下方配置 API Key）</span>
+      </label>
+      <p id="pdfStatus" class="pdf-status"></p>
+      <div id="pdfPreview" class="pdf-preview hidden"></div>
+      <details id="pdfRawWrap" class="pdf-raw hidden">
+        <summary>查看提取到的文字</summary>
+        <pre id="pdfRaw"></pre>
+      </details>
+    </div>
+    <div class="dialog-foot">
+      <label class="radio"><input type="radio" name="pdfMode" value="merge" checked> 合并（推荐）</label>
+      <label class="radio"><input type="radio" name="pdfMode" value="overwrite"> 覆盖同名模块</label>
+      <span class="spacer"></span>
+      <button type="button" id="pdfCancel" class="btn">取消</button>
+      <button type="button" id="pdfApply" class="btn primary" disabled>应用到简历</button>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="../shared/schema.js"></script>
+  <script src="../shared/resume-parser.js"></script>
+  <script src="options.js"></script>
+  <script type="module" src="pdf-import.js"></script>
+</body>
+</html>

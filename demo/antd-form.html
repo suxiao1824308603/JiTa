@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Ant Design 表单适配测试</title>
+  <style>
+    body { margin: 0; padding: 30px; background: #f4f6fb; color: #0f172a;
+      font: 14px/1.6 "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
+    .sheet { max-width: 760px; margin: 0 auto; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 26px 30px; }
+    h1 { margin: 0 0 4px; font-size: 20px; }
+    .sub { margin: 0 0 16px; color: #64748b; font-size: 12px; }
+    h2 { margin: 22px 0 10px; padding-top: 14px; border-top: 1px solid #eef2f8; font-size: 15px; }
+    .ant-form-item { display: grid; grid-template-columns: 110px 1fr; gap: 12px; align-items: start; margin-bottom: 14px; }
+    .ant-form-item-label { padding-top: 8px; color: #334155; font-size: 13px; }
+    .ant-select { position: relative; min-height: 38px; }
+    .ant-select-selector { display: flex; align-items: center; min-height: 38px; padding: 7px 10px;
+      border: 1px solid #d7dfec; border-radius: 8px; cursor: pointer; background: #fff; }
+    .ant-select-selection-placeholder { color: #9aa7bb; }
+    .ant-select-selection-search-input { flex: 1; min-width: 40px; height: 26px; border: 0; outline: none; background: transparent; font: inherit; font-size: 13px; }
+    .ant-select-dropdown { position: absolute; z-index: 20; margin-top: 4px; width: 220px; padding: 5px;
+      border: 1px solid #e2e8f0; border-radius: 9px; background: #fff; box-shadow: 0 10px 24px rgba(15,23,42,.14); }
+    .ant-select-dropdown-hidden { display: none; }
+    .ant-select-item-option { padding: 7px 9px; border-radius: 6px; cursor: pointer; }
+    .ant-select-item-option:hover { background: #f1f4ff; color: #3b5bfd; }
+    .date-selects { display: flex; gap: 6px; }
+    .date-selects select { flex: 1; height: 38px; padding: 0 8px; border: 1px solid #d7dfec; border-radius: 8px; background: #fff; font: inherit; font-size: 13px; }
+    .ant-picker { position: relative; width: 260px; }
+    .ant-picker-input input { width: 100%; height: 38px; padding: 7px 10px; border: 1px solid #d7dfec; border-radius: 8px; background: #fff; font: inherit; font-size: 13px; }
+    .ant-picker-dropdown { position: absolute; z-index: 30; margin-top: 4px; padding: 10px; border: 1px solid #e2e8f0; border-radius: 10px; background: #fff; box-shadow: 0 10px 24px rgba(15,23,42,.14); }
+    .ant-picker-dropdown-hidden { display: none; }
+    .ant-picker-cell { padding: 6px 10px; border-radius: 6px; cursor: pointer; text-align: center; }
+    .ant-picker-cell:hover { background: #f1f4ff; color: #3b5bfd; }
+    .hint { margin-top: 18px; color: #64748b; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <h1>Ant Design 表单适配测试</h1>
+    <p class="sub">覆盖 AntD 风格自定义下拉、年月日三下拉、只读日期选择器。</p>
+
+    <h2>教育经历</h2>
+
+    <div class="ant-form-item">
+      <div class="ant-form-item-label"><label>学历</label></div>
+      <div class="ant-select" id="degreeSelect" role="combobox">
+        <div class="ant-select-selector">
+          <span class="ant-select-selection-placeholder">请选择</span>
+        </div>
+        <div class="ant-select-dropdown ant-select-dropdown-hidden" id="degreeDropdown">
+          <div class="ant-select-item-option" data-value="大专">大专</div>
+          <div class="ant-select-item-option" data-value="本科">本科</div>
+          <div class="ant-select-item-option" data-value="硕士研究生">硕士研究生</div>
+          <div class="ant-select-item-option" data-value="博士研究生">博士研究生</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ant-form-item">
+      <div class="ant-form-item-label"><label>专业</label></div>
+      <div class="ant-select" id="majorSelect" role="combobox">
+        <div class="ant-select-selector">
+          <span class="ant-select-selection-placeholder" id="majorText">请选择专业</span>
+          <input class="ant-select-selection-search-input" id="majorSearch" autocomplete="off" placeholder="输入专业搜索">
+        </div>
+        <div class="ant-select-dropdown ant-select-dropdown-hidden" id="majorDropdown"></div>
+      </div>
+    </div>
+
+    <div class="ant-form-item">
+      <div class="ant-form-item-label"><label>成绩排名</label></div>
+      <select id="rankSelect">
+        <option value="">请选择</option>
+        <option value="top5">前5%</option>
+        <option value="top10">前10%</option>
+        <option value="top20">前20%</option>
+        <option value="top50">前50%</option>
+      </select>
+    </div>
+
+    <div class="ant-form-item">
+      <div class="ant-form-item-label"><label>入学时间</label></div>
+      <div class="date-selects">
+        <select id="startYear" aria-label="年">
+          <option value="">请选择</option>
+          <option value="2022">2022</option>
+          <option value="2023">2023</option>
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+        </select>
+        <select id="startMonth" aria-label="月">
+          <option value="">请选择</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+        </select>
+        <select id="startDay" aria-label="日">
+          <option value="">请选择</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+          <option value="13">13</option><option value="14">14</option><option value="15">15</option>
+          <option value="16">16</option><option value="17">17</option><option value="18">18</option>
+          <option value="19">19</option><option value="20">20</option><option value="21">21</option>
+          <option value="22">22</option><option value="23">23</option><option value="24">24</option>
+          <option value="25">25</option><option value="26">26</option><option value="27">27</option>
+          <option value="28">28</option><option value="29">29</option><option value="30">30</option>
+          <option value="31">31</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="ant-form-item">
+      <div class="ant-form-item-label"><label>毕业时间</label></div>
+      <div class="ant-picker" id="gradPicker">
+        <div class="ant-picker-input">
+          <input id="gradDate" readonly placeholder="请选择日期">
+        </div>
+        <div class="ant-picker-dropdown ant-picker-dropdown-hidden" id="gradDropdown">
+          <div class="ant-picker-panel">
+            <table>
+              <tbody>
+                <tr>
+                  <td class="ant-picker-cell" title="2026-06-01">1</td>
+                  <td class="ant-picker-cell" title="2026-06-15">15</td>
+                  <td class="ant-picker-cell" title="2026-06-30">30</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="hint">预期：学历选中「硕士研究生」，专业搜索选中「计算机技术」，成绩排名「前5%」，入学时间 2024 / 9，毕业时间 2026-06-01。</p>
+  </div>
+
+  <script>
+    const degree = document.getElementById('degreeSelect');
+    const degreeDropdown = document.getElementById('degreeDropdown');
+    const degreeText = degree.querySelector('.ant-select-selection-placeholder');
+
+    degree.addEventListener('click', () => {
+      degreeDropdown.classList.remove('ant-select-dropdown-hidden');
+    });
+
+    degreeDropdown.addEventListener('click', (event) => {
+      const option = event.target.closest('.ant-select-item-option');
+      if (!option) return;
+      event.stopPropagation();
+      degreeText.textContent = option.dataset.value;
+      degreeText.classList.remove('ant-select-selection-placeholder');
+      degreeDropdown.classList.add('ant-select-dropdown-hidden');
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!degree.contains(event.target)) degreeDropdown.classList.add('ant-select-dropdown-hidden');
+    });
+
+    const gradPicker = document.getElementById('gradPicker');
+    const gradDate = document.getElementById('gradDate');
+    const gradDropdown = document.getElementById('gradDropdown');
+
+    gradPicker.addEventListener('click', (event) => {
+      if (!event.target.closest('.ant-picker-cell')) {
+        gradDropdown.classList.remove('ant-picker-dropdown-hidden');
+      }
+    });
+
+    gradDropdown.addEventListener('click', (event) => {
+      const cell = event.target.closest('.ant-picker-cell');
+      if (!cell) return;
+      gradDate.value = cell.title;
+      gradDropdown.classList.add('ant-picker-dropdown-hidden');
+    });
+
+    const majorSelect = document.getElementById('majorSelect');
+    const majorSearch = document.getElementById('majorSearch');
+    const majorDropdown = document.getElementById('majorDropdown');
+    const majorText = document.getElementById('majorText');
+    const majors = ['计算机科学与技术', '软件工程', '计算机技术', '电子信息工程', '数据科学与大数据技术'];
+
+    function renderMajors(query) {
+      const list = majors.filter((item) => !query || item.includes(query));
+      majorDropdown.innerHTML = list.length
+        ? list.map((item) => `<div class="ant-select-item-option" data-value="${item}">${item}</div>`).join('')
+        : '<div class="ant-select-item-option">暂无匹配</div>';
+      majorDropdown.classList.remove('ant-select-dropdown-hidden');
+    }
+
+    majorSelect.addEventListener('click', () => {
+      renderMajors(majorSearch.value);
+      majorSearch.focus();
+    });
+
+    majorSearch.addEventListener('input', () => renderMajors(majorSearch.value));
+
+    majorDropdown.addEventListener('click', (event) => {
+      const option = event.target.closest('.ant-select-item-option');
+      if (!option || !option.dataset.value) return;
+      event.stopPropagation();
+      majorText.textContent = option.dataset.value;
+      majorText.classList.remove('ant-select-selection-placeholder');
+      majorSearch.value = '';
+      majorSearch.placeholder = '';
+      majorSearch.style.display = 'none';
+      majorDropdown.classList.add('ant-select-dropdown-hidden');
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!majorSelect.contains(event.target)) majorDropdown.classList.add('ant-select-dropdown-hidden');
+    });
+
+    window.__antdData = () => ({
+      degree: degreeText.textContent.trim(),
+      major: majorText.textContent.trim(),
+      rank: document.getElementById('rankSelect').value,
+      rankText: document.getElementById('rankSelect').selectedOptions[0]?.textContent || '',
+      year: document.getElementById('startYear').value,
+      month: document.getElementById('startMonth').value,
+      day: document.getElementById('startDay').value,
+      grad: gradDate.value
+    });
+  </script>
+</body>
+</html>
